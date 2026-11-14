@@ -10,7 +10,7 @@ A modern, responsive, and visually engaging personal portfolio website built wit
 
 ![AURA Portfolio Screenshot](https://github.com/yehia-hossam/AURA-Portfolio/blob/main/Screen%20Shot.png)
 
-> *Note: Make sure to upload your screenshot image to the repository and rename it to `screenshot.png` (or update the file name above to match your image).*
+
 
 ---
 
