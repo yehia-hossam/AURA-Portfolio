@@ -1,0 +1,1077 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AURA — Legal studio for creatives</title>
+<meta name="description" content="AURA is a fictional legal studio for creatives: copyright, trademarks, contracts and media rights.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Big+Shoulders+Display:wght@900&family=Permanent+Marker&family=Roboto+Condensed:wght@300;400;700&display=swap">
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+
+<style>
+:root{
+  --bg:#050505;
+  --bg-deep:#000000;
+  --bg-soft:#0d0d0d;
+  --bg-panel:#111111;
+  --yellow:#ffbc00;
+  --yellow-soft:rgba(255,188,0,.14);
+  --line:rgba(255,255,255,.10);
+  --line-strong:rgba(255,255,255,.22);
+  --text:#ffffff;
+  --text-dim:rgba(255,255,255,.62);
+  --text-dimmer:rgba(255,255,255,.45);
+  --f-display:'Anton',Impact,'Arial Narrow Bold',sans-serif;
+  --f-body:'Roboto Condensed','Arial Narrow',Arial,sans-serif;
+  --f-tag:'Big Shoulders Display','Arial Narrow',Impact,sans-serif;
+  --f-spray:'Permanent Marker','Marker Felt',cursive;
+  --u:calc(100vw / 1672);
+  --gut:clamp(16px,4vw,56px);
+  color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg);scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font:400 18px/1.55 var(--f-body);
+  overflow-x:clip;
+  -webkit-font-smoothing:antialiased;
+}
+img{max-width:100%}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ============================================================
+   NAV BAR — dark glass, sticky at top
+   ============================================================ */
+.top-nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;gap:clamp(16px,3vw,40px);
+  padding:calc(18px + env(safe-area-inset-top,0px)) max(var(--gut),env(safe-area-inset-right,0px)) 18px max(var(--gut),env(safe-area-inset-left,0px));
+  background:rgba(5,5,5,.65);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(255,255,255,.06);
+  transition:background .3s, border-color .3s, transform .3s;
+  font:400 13px/1 var(--f-body);letter-spacing:.16em;text-transform:uppercase;
+}
+.top-nav.scrolled{
+  background:rgba(5,5,5,.92);
+  border-bottom-color:var(--line);
+}
+.top-nav .logo{
+  font:400 clamp(24px,2.5vw,34px)/1 var(--f-display);
+  letter-spacing:.04em;text-decoration:none;color:#fff;
+  margin-right:auto;
+  transition:color .2s;
+}
+.top-nav .logo span{color:var(--yellow);text-shadow:0 0 20px rgba(255,188,0,.4)}
+.top-nav .logo:hover{color:var(--yellow)}
+
+.top-nav .nav-links{
+  display:flex;align-items:center;gap:clamp(14px,2vw,28px);
+}
+.top-nav .nav-links a{
+  text-decoration:none;color:rgba(255,255,255,.75);
+  position:relative;
+  transition:color .2s;
+  padding:4px 0;
+}
+.top-nav .nav-links a::after{
+  content:"";position:absolute;left:0;bottom:-2px;height:1px;width:100%;
+  background:var(--yellow);
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .3s ease;
+  box-shadow:0 0 8px var(--yellow);
+}
+.top-nav .nav-links a:hover{color:#fff}
+.top-nav .nav-links a:hover::after{transform:scaleX(1)}
+
+.top-nav .nav-cta{
+  background:var(--yellow);color:#000;
+  padding:10px 18px;font-weight:700;letter-spacing:.14em;
+  text-decoration:none;
+  transition:background .2s, color .2s, box-shadow .2s, transform .2s;
+  font-size:12px;
+}
+.top-nav .nav-cta:hover{
+  background:#fff;color:#000;
+  box-shadow:0 0 24px rgba(255,188,0,.4);
+  transform:translateY(-1px);
+}
+
+@media (max-width:900px){
+  .top-nav .nav-links{display:none}
+}
+@media (max-width:480px){
+  .top-nav{padding-top:calc(12px + env(safe-area-inset-top,0px));padding-bottom:12px}
+  .top-nav .nav-cta{padding:8px 12px;font-size:11px}
+}
+
+/* ============================================================
+   HERO — AURA behind character
+   ============================================================ */
+.hero{
+  position:relative;
+  width:100%;
+  height:100svh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  background:radial-gradient(ellipse at 50% 40%, #101010 0%, #050505 55%, #000 100%);
+}
+.hero::before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,.85) 100%);
+  pointer-events:none;z-index:5;
+}
+.hero::after{
+  content:"";position:absolute;inset:0;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .35 0'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");
+  opacity:.08;pointer-events:none;mix-blend-mode:overlay;z-index:6;
+}
+
+/* Giant Word — NOW YELLOW to match the character */
+.giant-word{
+  position:absolute;left:50%;top:50%;
+  transform:translate(-50%,-50%);
+  width:100%;
+  display:flex;justify-content:center;align-items:center;
+  font-family:var(--f-display);font-weight:400;
+  font-size:clamp(220px, 42vw, 780px);
+  line-height:.8;letter-spacing:-.02em;text-transform:uppercase;
+  z-index:1;user-select:none;pointer-events:none;
+  white-space:nowrap;
+  will-change:transform;
+}
+.giant-word .ltr{
+  display:inline-block;
+  color:var(--yellow);
+  text-shadow:
+    0 0 20px rgba(255,188,0,.35),
+    0 0 80px rgba(255,188,0,.15);
+  transform:translateZ(0);
+}
+
+.halo{
+  position:absolute;left:50%;top:50%;
+  width:min(78vh, 82vw);height:min(78vh, 82vw);
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(255,188,0,.14) 0%, rgba(255,188,0,.04) 40%, transparent 70%);
+  z-index:2;pointer-events:none;
+  filter:blur(30px);will-change:transform,opacity;
+}
+.character{
+  position:relative;z-index:3;
+  width:min(65vh, 70vw);max-width:720px;height:auto;
+  display:block;pointer-events:none;user-select:none;-webkit-user-drag:none;
+  filter:
+    drop-shadow(0 20px 60px rgba(0,0,0,.95))
+    drop-shadow(0 0 50px rgba(255,188,0,.12));
+  will-change:transform;
+}
+
+/* small scroll hint at the bottom of the hero */
+.scroll-hint{
+  position:absolute;
+  bottom:28px;left:50%;transform:translateX(-50%);
+  z-index:8;
+  font:700 11px/1 var(--f-body);
+  letter-spacing:.32em;text-transform:uppercase;
+  color:rgba(255,255,255,.5);
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  pointer-events:none;
+}
+.scroll-hint::after{
+  content:"";
+  width:1px;height:26px;
+  background:linear-gradient(to bottom, var(--yellow), transparent);
+  animation:scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse{
+  0%,100%{opacity:.3;transform:translateY(0)}
+  50%{opacity:1;transform:translateY(6px)}
+}
+
+/* ============================================================
+   SECTIONS — all dark
+   ============================================================ */
+.sec{
+  background:var(--bg);
+  padding-block:clamp(80px,11vw,148px);
+  border-top:1px solid var(--line);
+  position:relative;
+}
+.sec:nth-of-type(odd){
+  background:var(--bg-soft);
+}
+.wrap{
+  max-width:1280px;margin:0 auto;
+  padding-left:max(var(--gut),env(safe-area-inset-left,0px));
+  padding-right:max(var(--gut),env(safe-area-inset-right,0px));
+  position:relative;z-index:1;
+}
+.head{
+  display:flex;flex-direction:column;gap:10px;
+  margin-bottom:clamp(36px,5vw,64px);
+}
+.kicker{
+  font:400 clamp(20px,2.2vw,30px)/1 var(--f-spray);
+  width:max-content;max-width:100%;
+  color:var(--yellow);
+  filter:drop-shadow(0 0 14px rgba(255,188,0,.35));
+  transform:rotate(-2.5deg);transform-origin:left;
+  padding:4px 8px 8px 2px;
+}
+h2{
+  margin:0;
+  font:400 clamp(46px,8.4vw,124px)/.94 var(--f-display);
+  text-transform:uppercase;
+  text-wrap:balance;
+  letter-spacing:.005em;
+  color:#fff;
+  /* subtle inner gradient for depth */
+  background:linear-gradient(180deg,#ffffff 0%,#cfcfcf 65%,#9a9a9a 100%);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.rule{
+  height:1px;background:var(--line);border:0;
+  margin:0;position:relative;overflow:hidden;
+}
+.rule::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:100%;
+  background:linear-gradient(90deg, var(--yellow), transparent 60%);
+  opacity:.4;
+}
+.lead{
+  font-size:clamp(19px,1.7vw,24px);line-height:1.5;
+  font-weight:300;max-width:46ch;color:#fff;
+}
+.muted{color:var(--text-dim)}
+
+/* ---------- ABOUT ---------- */
+.about{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(28px,5vw,80px);align-items:start}
+.about .copy p{max-width:58ch}
+.stats{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  margin-top:clamp(48px,7vw,96px);
+  border-top:1px solid var(--line);
+}
+.stat{padding:32px 20px 12px 0;min-width:0}
+.stat + .stat{padding-left:20px;border-left:1px solid var(--line)}
+.stat b{
+  display:block;
+  font:400 clamp(48px,6.4vw,92px)/1 var(--f-display);
+  color:var(--yellow);
+  text-shadow:0 0 40px rgba(255,188,0,.25);
+}
+.stat span{
+  display:block;font:700 13px/1.3 var(--f-body);
+  letter-spacing:.16em;text-transform:uppercase;
+  margin-top:10px;color:var(--text-dim);
+}
+.how{margin-top:clamp(48px,7vw,96px)}
+.how h3,.sub{
+  font:900 clamp(26px,2.6vw,36px)/1 var(--f-tag);
+  text-transform:uppercase;letter-spacing:.04em;
+  margin:0 0 28px;color:#fff;
+}
+.steps{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:0;list-style:none;padding:0;counter-reset:s;
+}
+.steps li{
+  padding:26px 22px 28px 0;
+  border-top:2px solid var(--yellow);
+  min-width:0;position:relative;
+  transition:background .3s;
+}
+.steps li + li{padding-left:22px}
+.steps li:hover{background:rgba(255,188,0,.04)}
+.steps li::before{
+  counter-increment:s;content:"0" counter(s);
+  display:block;font:400 54px/1 var(--f-display);
+  color:transparent;
+  -webkit-text-stroke:1.4px var(--yellow);
+  margin-bottom:14px;
+}
+.steps strong{
+  display:block;font:900 24px/1.1 var(--f-tag);
+  text-transform:uppercase;letter-spacing:.04em;
+  margin-bottom:8px;color:#fff;
+}
+.steps span{color:var(--text-dim);font-size:16px;display:block}
+
+/* ---------- SERVICES / CARDS ---------- */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{
+  background:var(--bg-panel);
+  border:1px solid var(--line);
+  padding:32px 28px 28px;
+  min-width:0;
+  display:flex;flex-direction:column;gap:14px;
+  transition:border-color .3s, transform .3s, background .3s;
+  position:relative;
+  overflow:hidden;
+}
+.card::before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(600px circle at var(--mx,50%) var(--my,50%), rgba(255,188,0,.10), transparent 40%);
+  opacity:0;transition:opacity .3s;pointer-events:none;
+}
+.card:hover{border-color:rgba(255,188,0,.5);background:#141414;transform:translateY(-4px)}
+.card:hover::before{opacity:1}
+.card h3{
+  margin:0;
+  font:900 clamp(26px,2.4vw,32px)/1.05 var(--f-tag);
+  text-transform:uppercase;letter-spacing:.03em;
+  color:#fff;
+  position:relative;z-index:1;
+}
+.card p{
+  margin:0;color:var(--text-dim);font-size:16px;
+  position:relative;z-index:1;
+}
+.card ul{
+  list-style:none;margin:auto 0 0;
+  padding:16px 0 0;
+  border-top:1px solid var(--line);
+  display:flex;flex-wrap:wrap;gap:6px 14px;
+  font:700 12px/1.3 var(--f-body);
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--yellow);
+  position:relative;z-index:1;
+}
+
+/* ---------- CASES ---------- */
+.cases{display:flex;flex-direction:column}
+.case{
+  display:grid;grid-template-columns:160px 1fr auto;
+  gap:clamp(16px,3vw,48px);
+  align-items:center;
+  padding:32px 0;
+  border-top:1px solid var(--line);
+  transition:background .3s;
+}
+.case:last-child{border-bottom:1px solid var(--line)}
+.case:hover{background:rgba(255,188,0,.03)}
+.case .meta{
+  font:700 13px/1.5 var(--f-body);
+  letter-spacing:.16em;text-transform:uppercase;
+  color:var(--yellow);
+}
+.case h3{
+  margin:0 0 8px;
+  font:900 clamp(26px,2.8vw,38px)/1.05 var(--f-tag);
+  text-transform:uppercase;letter-spacing:.03em;
+  color:#fff;
+}
+.case p{
+  margin:0;color:var(--text-dim);
+  max-width:60ch;font-size:16px;
+}
+.case .out{text-align:right;min-width:0}
+.case .out b{
+  display:block;
+  font:400 clamp(44px,5.4vw,78px)/1 var(--f-display);
+  color:var(--yellow);
+  text-shadow:0 0 40px rgba(255,188,0,.25);
+}
+.case .out span{
+  font:700 12px/1.2 var(--f-body);
+  letter-spacing:.16em;text-transform:uppercase;
+  color:var(--text-dim);
+}
+
+/* ---------- BLOG ---------- */
+.posts{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.post{
+  display:flex;flex-direction:column;
+  background:var(--bg-panel);
+  border:1px solid var(--line);
+  text-decoration:none;min-width:0;
+  transition:border-color .3s, transform .3s;
+}
+.post:hover{border-color:rgba(255,188,0,.5);transform:translateY(-4px)}
+.post .top{
+  height:148px;
+  background:linear-gradient(135deg,#1a1a1a,#0a0a0a);
+  color:#fff;
+  padding:18px 20px;
+  display:flex;align-items:flex-end;justify-content:space-between;
+  gap:12px;position:relative;overflow:hidden;
+  border-bottom:1px solid var(--line);
+}
+.post .top::after{
+  content:"";position:absolute;inset:0;
+  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .3 0'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");
+  opacity:.15;mix-blend-mode:overlay;pointer-events:none;
+}
+.post .top > *{position:relative;z-index:1}
+.post .cat{
+  font:400 28px/1 var(--f-spray);
+  color:var(--yellow);
+  filter:drop-shadow(0 0 12px rgba(255,188,0,.3));
+}
+.post .when{
+  font:700 12px/1 var(--f-body);
+  letter-spacing:.14em;text-transform:uppercase;
+  color:rgba(255,255,255,.55);
+}
+.post .body{
+  padding:24px 24px 26px;
+  display:flex;flex-direction:column;gap:10px;flex:1;
+}
+.post h3{
+  margin:0;
+  font:900 clamp(24px,2.2vw,29px)/1.05 var(--f-tag);
+  text-transform:uppercase;letter-spacing:.02em;
+  text-wrap:balance;color:#fff;
+}
+.post p{
+  margin:0;color:var(--text-dim);font-size:15px;line-height:1.55;
+}
+.post .more{
+  margin-top:auto;padding-top:10px;
+  font:700 13px/1 var(--f-body);
+  letter-spacing:.16em;text-transform:uppercase;
+  color:var(--yellow);
+  transition:letter-spacing .3s;
+}
+.post:hover .more{letter-spacing:.26em}
+
+/* ---------- CONTACTS (dark slab with yellow accent) ---------- */
+.slab{
+  background:linear-gradient(180deg,#080808 0%,#000 100%);
+  padding-block:clamp(80px,11vw,148px);
+  border-top:1px solid var(--yellow);
+  position:relative;
+  overflow:hidden;
+}
+.slab::before{
+  content:"";position:absolute;
+  top:-10%;left:50%;transform:translateX(-50%);
+  width:min(900px,90vw);height:min(900px,90vw);
+  border-radius:50%;
+  background:radial-gradient(circle, rgba(255,188,0,.10) 0%, transparent 60%);
+  filter:blur(40px);pointer-events:none;
+}
+.slab .wrap{position:relative;z-index:1}
+.contact{display:grid;grid-template-columns:1fr 1.15fr;gap:clamp(32px,5vw,80px);align-items:start}
+.contact dl{margin:0;display:grid;gap:24px}
+.contact dt{
+  font:700 12px/1 var(--f-body);
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--yellow);margin-bottom:8px;
+}
+.contact dd{
+  margin:0;
+  font:400 clamp(24px,2.8vw,36px)/1.15 var(--f-display);
+  text-transform:uppercase;letter-spacing:.01em;
+  overflow-wrap:anywhere;color:#fff;
+}
+form{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.fld{display:flex;flex-direction:column;gap:8px;min-width:0}
+.fld.full{grid-column:1/-1}
+label{
+  font:700 12px/1 var(--f-body);
+  letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(255,255,255,.6);
+}
+input,select,textarea{
+  font:400 18px/1.4 var(--f-body);
+  color:#fff;
+  background:transparent;
+  border:0;
+  border-bottom:1px solid var(--line-strong);
+  border-radius:0;
+  padding:14px 4px;
+  width:100%;
+  transition:border-color .2s;
+}
+textarea{min-height:140px;resize:vertical}
+input::placeholder,textarea::placeholder{color:rgba(255,255,255,.35)}
+input:focus-visible,select:focus-visible,textarea:focus-visible{
+  outline:none;
+  border-bottom-color:var(--yellow);
+  box-shadow:0 1px 0 var(--yellow);
+}
+select option{background:#0a0a0a;color:#fff}
+
+/* buttons */
+.btn{
+  font:900 20px/1 var(--f-tag);
+  letter-spacing:.1em;text-transform:uppercase;
+  cursor:pointer;
+  background:var(--yellow);color:#000;
+  border:2px solid var(--yellow);
+  padding:18px 28px;
+  transition:background .25s,color .25s,transform .2s,box-shadow .25s;
+}
+.btn:hover{
+  background:transparent;color:var(--yellow);
+  box-shadow:0 0 40px rgba(255,188,0,.25);
+}
+.btn.ghost{
+  background:transparent;color:#fff;
+  border-color:rgba(255,255,255,.25);
+  padding:12px 20px;font-size:16px;
+}
+.btn.ghost:hover{
+  background:var(--yellow);border-color:var(--yellow);color:#000;
+}
+.note{
+  grid-column:1/-1;font-weight:700;
+  min-height:1.5em;margin:0;color:var(--yellow);
+  font-size:14px;letter-spacing:.04em;
+}
+
+/* ---------- VACANCIES ---------- */
+.jobs{border-top:1px solid var(--line)}
+.job{
+  display:grid;grid-template-columns:1fr 220px auto;
+  gap:clamp(14px,3vw,40px);align-items:center;
+  padding:28px 0;
+  border-bottom:1px solid var(--line);
+  transition:background .3s;
+}
+.job:hover{background:rgba(255,188,0,.02)}
+.job h3{
+  margin:0 0 6px;
+  font:900 clamp(24px,2.6vw,34px)/1.05 var(--f-tag);
+  text-transform:uppercase;letter-spacing:.03em;
+  color:#fff;
+}
+.job p{margin:0;color:var(--text-dim);font-size:16px}
+.job .where{
+  font:700 12px/1.6 var(--f-body);
+  letter-spacing:.16em;text-transform:uppercase;
+  color:var(--yellow);
+}
+.open{margin-top:40px;max-width:60ch;color:var(--text-dim)}
+
+/* ---------- FOOTER ---------- */
+footer{
+  background:#000;
+  border-top:1px solid var(--line);
+  padding-block:64px calc(32px + env(safe-area-inset-bottom,0px));
+  position:relative;
+  overflow:hidden;
+}
+.foot{
+  display:flex;flex-wrap:wrap;gap:32px 48px;
+  align-items:flex-end;justify-content:space-between;
+}
+.foot .big{
+  font:400 clamp(56px,12vw,180px)/.85 var(--f-display);
+  text-transform:uppercase;
+  color:var(--yellow);
+  text-shadow:0 0 60px rgba(255,188,0,.2);
+}
+.foot nav{
+  display:flex;flex-wrap:wrap;gap:12px 24px;
+  font:400 13px/1 var(--f-body);
+  letter-spacing:.16em;text-transform:uppercase;
+}
+.foot nav a{
+  text-decoration:none;color:rgba(255,255,255,.7);
+  transition:color .2s;
+}
+.foot nav a:hover{color:var(--yellow)}
+.fine{
+  margin:32px 0 0;font-size:13px;
+  color:rgba(255,255,255,.4);max-width:80ch;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width:1000px){
+  .cards,.posts{grid-template-columns:repeat(2,1fr)}
+  .steps{grid-template-columns:repeat(2,1fr)}
+  .steps li:nth-child(odd){padding-left:0}
+  .steps li:nth-child(even){padding-left:22px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .stat:nth-child(3){padding-left:0;border-left:0}
+  .stat:nth-child(n+3){border-top:1px solid var(--line)}
+  .about,.contact{grid-template-columns:1fr}
+}
+@media (max-width:800px){
+  .giant-word{font-size:clamp(140px, 46vw, 420px)}
+  .character{width:min(55vh, 85vw)}
+  .halo{width:min(70vh, 95vw);height:min(70vh, 95vw)}
+  .scroll-hint{display:none}
+}
+@media (max-width:640px){
+  .cards,.posts{grid-template-columns:1fr}
+  .case{grid-template-columns:1fr;gap:12px}
+  .case .out{text-align:left}
+  .job{grid-template-columns:1fr;gap:14px}
+  .job .btn{justify-self:start}
+  .steps{grid-template-columns:1fr}
+  .steps li,.steps li:nth-child(even),.steps li:nth-child(odd){padding-left:0}
+  form{grid-template-columns:1fr}
+  .stat{padding-right:12px}
+  .stat + .stat{padding-left:14px}
+}
+</style>
+</head>
+<body>
+
+<a class="sr" href="#about">Skip to content</a>
+
+<!-- ============================================================
+     TOP NAV — glass, dark, yellow CTA
+     ============================================================ -->
+<nav class="top-nav" id="topNav" aria-label="Main">
+  <a class="logo" href="#top" aria-label="AURA, back to top">A<span>U</span>RA</a>
+  <div class="nav-links">
+    <a href="#about">About us</a>
+    <a href="#services">Services</a>
+    <a href="#cases">Our cases</a>
+    <a href="#blog">Blog</a>
+    <a href="#vacancies">Vacancies</a>
+  </div>
+  <a class="nav-cta" href="#contacts">Contacts</a>
+</nav>
+
+<!-- ============================================================
+     HERO — AURA behind character
+     ============================================================ -->
+<header class="hero" id="top">
+  <div class="giant-word" id="giantWord" aria-label="AURA">
+    <span class="ltr">A</span><span class="ltr">U</span><span class="ltr">R</span><span class="ltr">A</span>
+  </div>
+
+  <div class="halo" id="halo" aria-hidden="true"></div>
+
+  <!-- Character image (change src if needed) -->
+  <img class="character" id="character" src="./character.png" alt="Character" draggable="false">
+
+  <div class="scroll-hint" aria-hidden="true">scroll</div>
+</header>
+
+<!-- ============================================================
+     ABOUT
+     ============================================================ -->
+<section class="sec" id="about">
+  <div class="wrap">
+    <div class="head">
+      <div class="kicker">about us</div>
+      <h2>The legal side of your creative work</h2>
+    </div>
+    <hr class="rule" style="margin-bottom:clamp(32px,4vw,56px)">
+    <div class="about">
+      <p class="lead">AURA is a small studio of lawyers who work with illustrators, musicians, filmmakers, designers and the people who hire them.</p>
+      <div class="copy muted">
+        <p>We read the contract before the invoice goes out, register the name before the launch, and answer the angry email before it becomes a lawsuit. Our clients make things for a living. We make sure what they make stays theirs.</p>
+        <p>No jargon, fixed fees where we can, and a lawyer who picks up the phone.</p>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><b>9</b><span>Years in practice</span></div>
+      <div class="stat"><b>1,200+</b><span>Contracts drafted</span></div>
+      <div class="stat"><b>340</b><span>Marks registered</span></div>
+      <div class="stat"><b>48h</b><span>First reply, always</span></div>
+    </div>
+
+    <div class="how">
+      <h3 class="sub">How we work</h3>
+      <ol class="steps">
+        <li><strong>Brief</strong><span>A 30-minute call. You explain the project, we explain the risks.</span></li>
+        <li><strong>Review</strong><span>We read every page you were sent and mark what to change.</span></li>
+        <li><strong>Draft</strong><span>Plain-language agreements and filings, with a fixed quote first.</span></li>
+        <li><strong>Defend</strong><span>If it goes wrong, we write the letter, file the claim or take the stand.</span></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     SERVICES
+     ============================================================ -->
+<section class="sec" id="services">
+  <div class="wrap">
+    <div class="head">
+      <div class="kicker">what we do</div>
+      <h2>Services</h2>
+    </div>
+    <div class="cards">
+      <article class="card tilt">
+        <h3>Copyright &amp; licensing</h3>
+        <p>Who owns the work, who may use it, for how long and for how much. We write licences that say it clearly.</p>
+        <ul><li>Assignments</li><li>Licences</li><li>Moral rights</li></ul>
+      </article>
+      <article class="card tilt">
+        <h3>Trademarks &amp; brand</h3>
+        <p>Search, register and defend the name of your studio, label, collective or collection before someone else does.</p>
+        <ul><li>Name searches</li><li>Filings</li><li>Oppositions</li></ul>
+      </article>
+      <article class="card tilt">
+        <h3>Freelance contracts</h3>
+        <p>Commission agreements, retainers and NDAs that protect your rates, your deadlines and your portfolio rights.</p>
+        <ul><li>Commissions</li><li>Retainers</li><li>Kill fees</li></ul>
+      </article>
+      <article class="card tilt">
+        <h3>Music, film &amp; media</h3>
+        <p>Sampling clearances, sync deals, distribution terms and release forms for crews, casts and collaborators.</p>
+        <ul><li>Clearances</li><li>Sync</li><li>Releases</li></ul>
+      </article>
+      <article class="card tilt">
+        <h3>Studio setup</h3>
+        <p>Choose the right company form, split ownership between partners and put house rules on paper from day one.</p>
+        <ul><li>Incorporation</li><li>Partner terms</li><li>Hiring</li></ul>
+      </article>
+      <article class="card tilt">
+        <h3>Disputes &amp; takedowns</h3>
+        <p>Copied, uncredited or unpaid? We send the letter, file the notice and negotiate before anyone goes to court.</p>
+        <ul><li>Cease &amp; desist</li><li>Platform notices</li><li>Settlement</li></ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CASES
+     ============================================================ -->
+<section class="sec" id="cases">
+  <div class="wrap">
+    <div class="head">
+      <div class="kicker">proof on the wall</div>
+      <h2>Our cases</h2>
+    </div>
+    <div class="cases">
+      <article class="case">
+        <div class="meta">Mural artist<br>Copyright</div>
+        <div><h3>Prints sold without permission</h3><p>A street painter found her piece on mass-produced posters. We traced the seller, sent a notice and agreed a payment and a public credit.</p></div>
+        <div class="out"><b>9 days</b><span>To stop the sales</span></div>
+      </article>
+      <article class="case">
+        <div class="meta">Indie label<br>Music rights</div>
+        <div><h3>A sample cleared after release</h3><p>A four-person label had a hit built on an uncleared loop. We negotiated a back-dated licence with a fair royalty split.</p></div>
+        <div class="out"><b>0</b><span>Takedowns, 100% kept</span></div>
+      </article>
+      <article class="case">
+        <div class="meta">Design collective<br>Trademark</div>
+        <div><h3>A name two cities wanted</h3><p>Two studios used almost the same name. We built the evidence of first use and reached a coexistence agreement.</p></div>
+        <div class="out"><b>1 deal</b><span>No court, both names stay</span></div>
+      </article>
+      <article class="case">
+        <div class="meta">Documentary crew<br>Contracts</div>
+        <div><h3>Release forms for forty interviewees</h3><p>A crew filmed in six countries with no paperwork. We drafted multilingual releases and fixed the chain of title before the festival.</p></div>
+        <div class="out"><b>40</b><span>Releases signed in 3 weeks</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     BLOG
+     ============================================================ -->
+<section class="sec" id="blog">
+  <div class="wrap">
+    <div class="head">
+      <div class="kicker">read before you sign</div>
+      <h2>Blog</h2>
+    </div>
+    <div class="posts">
+      <a class="post tilt" href="#blog">
+        <div class="top"><span class="cat">murals</span><span class="when">Oct 2026 · 6 min</span></div>
+        <div class="body"><h3>Who owns a mural: the wall, the painter or the client?</h3><p>Three situations, three different answers, and the one-page agreement that avoids all of them.</p><span class="more">Read article →</span></div>
+      </a>
+      <a class="post tilt" href="#blog">
+        <div class="top"><span class="cat">freelance</span><span class="when">Sep 2026 · 5 min</span></div>
+        <div class="body"><h3>Five clauses a freelance illustrator should never sign</h3><p>Unlimited revisions, perpetual rights, payment on approval and two more traps hiding in plain sight.</p><span class="more">Read article →</span></div>
+      </a>
+      <a class="post tilt" href="#blog">
+        <div class="top"><span class="cat">music</span><span class="when">Aug 2026 · 8 min</span></div>
+        <div class="body"><h3>Sampling in 2026: a clearance checklist for small labels</h3><p>Master, publishing, credits and territory. What to ask, who to ask and when to walk away.</p><span class="more">Read article →</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     CONTACTS
+     ============================================================ -->
+<section class="slab" id="contacts">
+  <div class="wrap">
+    <div class="head">
+      <div class="kicker">say hello</div>
+      <h2>Contacts</h2>
+    </div>
+    <hr class="rule" style="margin-bottom:clamp(32px,4vw,56px)">
+    <div class="contact">
+      <dl>
+        <div><dt>Studio</dt><dd>14 Foundry Yard, Unit 3</dd></div>
+        <div><dt>Email</dt><dd>yehiahossamdev@gmail.com</dd></div>
+        <div><dt>Phone</dt><dd>+201027068227</dd></div>
+        <div><dt>Hours</dt><dd>Mon–Fri, 9:00–18:00</dd></div>
+      </dl>
+      <form id="contactForm" novalidate>
+        <div class="fld"><label for="f-name">Name</label><input id="f-name" name="name" autocomplete="name" placeholder="Your name" required></div>
+        <div class="fld"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" placeholder="you@studio.com" required></div>
+        <div class="fld full"><label for="f-topic">What do you need?</label>
+          <select id="f-topic" name="topic">
+            <option>Contract review</option><option>Trademark or brand</option><option>Copyright or licensing</option>
+            <option>Music, film or media rights</option><option>A dispute or takedown</option><option>Something else</option>
+          </select>
+        </div>
+        <div class="fld full"><label for="f-msg">Tell us the story</label><textarea id="f-msg" name="message" placeholder="Who is involved, what you made and what went wrong or what you plan." required></textarea></div>
+        <div class="fld full" style="align-items:flex-start"><button class="btn" type="submit">Send message</button></div>
+        <p class="note" id="formNote" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     VACANCIES
+     ============================================================ -->
+<section class="sec" id="vacancies">
+  <div class="wrap">
+    <div class="head">
+      <div class="kicker">join the crew</div>
+      <h2>Vacancies</h2>
+    </div>
+    <div class="jobs">
+      <article class="job">
+        <div><h3>Junior associate, IP &amp; media</h3><p>Draft licences, run trademark searches and sit in on client calls with a senior partner.</p></div>
+        <div class="where">Full time<br>Hybrid · 3 days on site</div>
+        <button class="btn ghost" type="button" data-apply>Apply</button>
+      </article>
+      <article class="job">
+        <div><h3>Contracts paralegal</h3><p>Own the template library, prepare agreements and keep every deadline from slipping.</p></div>
+        <div class="where">Full time<br>On site</div>
+        <button class="btn ghost" type="button" data-apply>Apply</button>
+      </article>
+      <article class="job">
+        <div><h3>Studio manager</h3><p>Run the office, the calendar and the client desk so the lawyers can concentrate on the cases.</p></div>
+        <div class="where">Part time<br>On site</div>
+        <button class="btn ghost" type="button" data-apply>Apply</button>
+      </article>
+    </div>
+    <p class="open">No role that fits? If you draw, write, shoot or play and you care about contracts, send us a short note and a link to your work.</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div class="big">AURA</div>
+      <nav aria-label="Footer">
+        <a href="#about">About us</a><a href="#services">Services</a><a href="#cases">Our cases</a>
+        <a href="#blog">Blog</a><a href="#contacts">Contacts</a><a href="#vacancies">Vacancies</a>
+      </nav>
+    </div>
+    <p class="fine">© 2026 AURA | Yehia Dev. A fictional legal studio created for a design project. Nothing on this page is legal advice.</p>
+  </div>
+</footer>
+
+<script>
+window.addEventListener('load', () => {
+  const { gsap, ScrollTrigger } = window;
+  if (!gsap) return;
+  if (ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
+
+  const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const fine = matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  /* ----------------------------------------------------------
+     NAV BAR SCROLL EFFECT
+  ---------------------------------------------------------- */
+  const topNav = document.getElementById('topNav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+      topNav.classList.add('scrolled');
+    } else {
+      topNav.classList.remove('scrolled');
+    }
+  }, { passive: true });
+
+  /* ----------------------------------------------------------
+     HERO ENTRANCE
+  ---------------------------------------------------------- */
+  const word      = document.getElementById('giantWord');
+  const letters   = word.querySelectorAll('.ltr');
+  const character = document.getElementById('character');
+  const halo      = document.getElementById('halo');
+
+  if (!calm) {
+    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+    gsap.set(letters, { yPercent: 115, opacity: 0 });
+    gsap.set(character, { yPercent: 40, opacity: 0, scale: 0.92 });
+    gsap.set(halo, { opacity: 0, scale: 0.7 });
+
+    tl.to(letters, { yPercent: 0, opacity: 1, duration: 1.1, stagger: 0.12, ease: 'power4.out' }, 0.15);
+    tl.to(character, { yPercent: 0, opacity: 1, scale: 1, duration: 1.3 }, 0.55);
+    tl.to(halo, { opacity: 1, scale: 1, duration: 1.6 }, 0.55);
+
+    /* idle float */
+    gsap.to(character, { y: -12, duration: 3.2, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+    gsap.to(word,      { y: 8,   duration: 4.2, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+    gsap.to(halo,      { scale: 1.08, opacity: 0.7, duration: 2.6, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+
+    /* mouse parallax */
+    if (fine) {
+      const wordX = gsap.quickTo(word, 'x', { duration: 0.9, ease: 'power2.out' });
+      const wordY = gsap.quickTo(word, 'y', { duration: 0.9, ease: 'power2.out' });
+      const chX   = gsap.quickTo(character, 'x', { duration: 0.7, ease: 'power2.out' });
+      const chY   = gsap.quickTo(character, 'y', { duration: 0.7, ease: 'power2.out' });
+      const haX   = gsap.quickTo(halo, 'x', { duration: 1.0, ease: 'power2.out' });
+      const haY   = gsap.quickTo(halo, 'y', { duration: 1.0, ease: 'power2.out' });
+
+      let queued = false;
+      window.addEventListener('pointermove', e => {
+        if (e.pointerType !== 'mouse' || queued) return;
+        queued = true;
+        requestAnimationFrame(() => {
+          queued = false;
+          const nx = (e.clientX / window.innerWidth  - 0.5) * 2;
+          const ny = (e.clientY / window.innerHeight - 0.5) * 2;
+          wordX(nx * 28); wordY(ny * 14);
+          chX(nx * -16);  chY(ny * -10);
+          haX(nx * 22);   haY(ny * 12);
+        });
+      }, { passive: true });
+    }
+  } else {
+    gsap.set(letters, { yPercent: 0, opacity: 1 });
+    gsap.set(character, { yPercent: 0, opacity: 1, scale: 1 });
+    gsap.set(halo, { opacity: 1, scale: 1 });
+  }
+
+  /* ----------------------------------------------------------
+     SCROLL REVEALS
+  ---------------------------------------------------------- */
+  if (ScrollTrigger && !calm) {
+    gsap.utils.toArray('.sec h2').forEach(h => {
+      gsap.from(h, {
+        y: 60, autoAlpha: 0, duration: 1, ease: 'power3.out',
+        scrollTrigger: { trigger: h, start: 'top 88%', once: true }
+      });
+    });
+
+    gsap.utils.toArray('.kicker').forEach(k => {
+      gsap.from(k, {
+        x: -20, autoAlpha: 0, duration: 0.8, ease: 'power3.out',
+        scrollTrigger: { trigger: k, start: 'top 90%', once: true }
+      });
+    });
+
+    gsap.utils.toArray('.rule').forEach(r => {
+      gsap.from(r, {
+        scaleX: 0, transformOrigin: 'left center',
+        duration: 1.1, ease: 'power3.inOut',
+        scrollTrigger: { trigger: r, start: 'top 92%', once: true }
+      });
+    });
+
+    gsap.from('.card', {
+      y: 50, autoAlpha: 0, duration: 0.9, ease: 'power3.out', stagger: 0.09,
+      scrollTrigger: { trigger: '.cards', start: 'top 82%', once: true }
+    });
+
+    gsap.from('.post', {
+      y: 50, autoAlpha: 0, duration: 0.9, ease: 'power3.out', stagger: 0.1,
+      scrollTrigger: { trigger: '.posts', start: 'top 82%', once: true }
+    });
+
+    gsap.from('.case', {
+      x: -40, autoAlpha: 0, duration: 0.8, ease: 'power3.out', stagger: 0.09,
+      scrollTrigger: { trigger: '.cases', start: 'top 82%', once: true }
+    });
+
+    gsap.from('.job', {
+      x: 40, autoAlpha: 0, duration: 0.8, ease: 'power3.out', stagger: 0.1,
+      scrollTrigger: { trigger: '.jobs', start: 'top 85%', once: true }
+    });
+
+    gsap.from('.steps li', {
+      y: 40, autoAlpha: 0, duration: 0.8, ease: 'power3.out', stagger: 0.12,
+      scrollTrigger: { trigger: '.steps', start: 'top 85%', once: true }
+    });
+
+    gsap.from('.slab .contact dl > div', {
+      y: 40, autoAlpha: 0, duration: 0.8, ease: 'power3.out', stagger: 0.1,
+      scrollTrigger: { trigger: '.contact', start: 'top 82%', once: true }
+    });
+    gsap.from('.slab form > .fld', {
+      y: 30, autoAlpha: 0, duration: 0.7, ease: 'power3.out', stagger: 0.08,
+      scrollTrigger: { trigger: '.contact', start: 'top 82%', once: true }
+    });
+  }
+
+  /* ----------------------------------------------------------
+     3D TILT on cards / posts + spotlight
+  ---------------------------------------------------------- */
+  if (fine && !calm) {
+    const TILT_MAX = 6;
+    document.querySelectorAll('.tilt').forEach(el => {
+      const rX = gsap.quickTo(el, 'rotationX', { duration: 0.5, ease: 'power2.out' });
+      const rY = gsap.quickTo(el, 'rotationY', { duration: 0.5, ease: 'power2.out' });
+      const sc = gsap.quickTo(el, 'scale', { duration: 0.5, ease: 'power2.out' });
+
+      gsap.set(el, { transformPerspective: 800, transformStyle: 'preserve-3d' });
+
+      el.addEventListener('pointerenter', () => sc(1.02));
+      el.addEventListener('pointerleave', () => { sc(1); rX(0); rY(0); });
+
+      el.addEventListener('pointermove', e => {
+        const r = el.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width  - 0.5;
+        const y = (e.clientY - r.top)  / r.height - 0.5;
+        rY(x * TILT_MAX * 2);
+        rX(-y * TILT_MAX * 2);
+        if (el.classList.contains('card')) {
+          el.style.setProperty('--mx', (x * 100 + 50) + '%');
+          el.style.setProperty('--my', (y * 100 + 50) + '%');
+        }
+      });
+    });
+  }
+
+  /* ----------------------------------------------------------
+     FORMS — demo only
+  ---------------------------------------------------------- */
+  const form = document.getElementById('contactForm');
+  const note = document.getElementById('formNote');
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const bad = [...form.querySelectorAll('[required]')].find(f =>
+      !f.value.trim() || (f.type === 'email' && !/^\S+@\S+\.\S+$/.test(f.value)));
+    if (bad) {
+      note.textContent = 'Please fill in your name, a valid email and a few words about your case.';
+      bad.focus();
+      if (!calm) gsap.fromTo(note, { x: -8 }, { x: 0, duration: 0.4, ease: 'elastic.out(1, 0.4)' });
+      return;
+    }
+    note.textContent = 'Thanks. This is a demo form, so nothing was sent.';
+    form.reset();
+  });
+  document.querySelectorAll('[data-apply]').forEach(b => b.addEventListener('click', () => {
+    document.getElementById('contacts').scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('f-topic').value = 'Something else';
+    document.getElementById('f-msg').focus({ preventScroll: true });
+  }));
+
+  if (ScrollTrigger && document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(() => ScrollTrigger.refresh());
+  }
+});
+</script>
+</body>
+</html>
