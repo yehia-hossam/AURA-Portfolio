@@ -1,4 +1,4 @@
-# 🌟 AURA Portfolio
+#  AURA Portfolio
 
 A modern, responsive, and visually engaging personal portfolio website built with clean HTML. Designed to showcase projects, skills, and personal branding with a sleek user interface.
 
@@ -6,9 +6,9 @@ A modern, responsive, and visually engaging personal portfolio website built wit
 
 ---
 
-## 📸 Preview
+##  Preview
 
-![AURA Portfolio Screenshot](./screenshot.png)
+![AURA Portfolio Screenshot](https://github.com/yehia-hossam/AURA-Portfolio/blob/main/Screen%20Shot.png)
 
 > *Note: Make sure to upload your screenshot image to the repository and rename it to `screenshot.png` (or update the file name above to match your image).*
 
